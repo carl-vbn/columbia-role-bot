@@ -125,3 +125,7 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Guild specific config
+config.json
+role_ids.txt
