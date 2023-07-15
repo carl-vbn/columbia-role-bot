@@ -129,3 +129,4 @@ dist
 # Guild specific config
 config.json
 role_ids.txt
+save/*

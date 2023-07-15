@@ -1,13 +1,15 @@
 import { Client, GatewayIntentBits, Events } from 'discord.js';
 import { registerCommands } from './command-manager';
 import dotenv from 'dotenv';
-
-import config from './config.json';
+import Save, { SaveData } from './save';
+import { listenForRoleMenuButtonPress } from './interaction-listeners';
 
 dotenv.config();
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+export const saves: {[guildId: string]: any} = {};
 
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
@@ -18,7 +20,24 @@ client.once(Events.ClientReady, async (c: Client) => {
 
     // Register the commands for each guild the bot is in
 
-    for (const guild of guilds) {
+    for (const oauth2Guild of guilds) {
+        const guild = await oauth2Guild.fetch();
+
+        const save = Save(guild.id);
+        await save.loadData();
+        saves[guild.id] = save;
+
+        for (const roleMenuMessage of save.getRoleMenuMessages()) {
+            const channel = await guild.channels.fetch(roleMenuMessage.channelId);
+            if (channel != null && channel.isTextBased()) {
+                const message = await channel.messages.fetch(roleMenuMessage.id);
+                if (message != null) {
+                    console.log(`Listening for role menu button presses on message '${message.id}' in guild '${guild.name}'`);
+                    listenForRoleMenuButtonPress(message);
+                }
+            }
+        }
+
         registerCommands(c, guild);
     }
 });

@@ -1,4 +1,4 @@
-import { REST, Routes, Client, OAuth2Guild, Events } from 'discord.js';
+import { REST, Routes, Client, OAuth2Guild, Events, Guild } from 'discord.js';
 
 import sendRoleMessagesCommand from './commands/send-role-messages.js';
 
@@ -17,7 +17,7 @@ const commands: Command[] = [];
 commands.push(sendRoleMessagesCommand);
 
 // and deploy your commands!
-export const registerCommands = async (client: Client, guild: OAuth2Guild) => {
+export const registerCommands = async (client: Client, guild: Guild) => {
     // Construct and prepare an instance of the REST module
     const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
