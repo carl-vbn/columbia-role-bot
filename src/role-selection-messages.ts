@@ -1,4 +1,4 @@
-import { APIActionRowComponent, APIMessageActionRowComponent, ActionRowBuilder, ButtonInteraction, GuildMember, JSONEncodable, StringSelectMenuBuilder } from "discord.js";
+import { APIActionRowComponent, APIMessageActionRowComponent, ActionRowBuilder, ButtonInteraction, EmbedBuilder, GuildMember, JSONEncodable, StringSelectMenuBuilder } from "discord.js";
 import { buildDivisionSelectionMessage, generateDropdownOptions } from "./utils";
 import { listenForDivisionSelection, listenForDropdownRoleSelection } from "./interaction-listeners";
 
@@ -54,7 +54,7 @@ export async function sendPronounSelection(interaction: ButtonInteraction) {
             .addOptions(await generateDropdownOptions(interaction.member as GuildMember, pronouns))
         ) as JSONEncodable<APIActionRowComponent<APIMessageActionRowComponent>>;
 
-    const response = await interaction.reply({ content: 'Choose your pronouns', components: [row], ephemeral: true });
+    const response = await interaction.reply({ embeds: [new EmbedBuilder().setColor('#4E84D6').setTitle('What are your pronouns?').setDescription('(feel free to choose all that apply)')], components: [row], ephemeral: true });
 
     listenForDropdownRoleSelection(interaction, response);
 }

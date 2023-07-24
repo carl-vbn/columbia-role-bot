@@ -1,4 +1,4 @@
-import { REST, Routes, Client, OAuth2Guild, Events, Guild } from 'discord.js';
+import { REST, Routes, Client, OAuth2Guild, Events, Guild, Interaction } from 'discord.js';
 
 import sendRoleMessagesCommand from './commands/send-role-messages.js';
 
@@ -33,26 +33,26 @@ export const registerCommands = async (client: Client, guild: Guild) => {
 		// And of course, make sure you catch and log any errors!
 		console.error(error);
 	}
-
-    client.on(Events.InteractionCreate, async interaction => {
-        if (!interaction.isChatInputCommand()) return;
-    
-        const command = commands.find(cmd => cmd.data.name == interaction.commandName);
-    
-        if (!command) {
-            console.error(`No command matching ${interaction.commandName} was found.`);
-            return;
-        }
-    
-        try {
-            await command.execute(interaction);
-        } catch (error) {
-            console.error(error);
-            if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-            } else {
-                await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-            }
-        }
-    });
 };
+
+export const handleInteraction = async (interaction: Interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = commands.find(cmd => cmd.data.name == interaction.commandName);
+
+    if (!command) {
+        console.error(`No command matching ${interaction.commandName} was found.`);
+        return;
+    }
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+        } else {
+            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        }
+    }
+}

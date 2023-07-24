@@ -1,4 +1,4 @@
-import { StringSelectMenuOptionBuilder, ActionRowBuilder, GuildMember, JSONEncodable, APIActionRowComponent, APIMessageActionRowComponent, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { StringSelectMenuOptionBuilder, ActionRowBuilder, GuildMember, JSONEncodable, APIActionRowComponent, APIMessageActionRowComponent, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import config from './config.json';
 
 const divisions = config.divisions;
@@ -23,7 +23,7 @@ export async function buildDivisionSelectionMessage(member: GuildMember) {
             .setStyle(alum ? ButtonStyle.Success : ButtonStyle.Secondary)
         ) as JSONEncodable<APIActionRowComponent<APIMessageActionRowComponent>>;
 
-    return { content: 'Choose your division', components: [row], ephemeral: true };
+    return { embeds: [new EmbedBuilder().setColor('#4E84D6').setTitle('What is your current division?').setDescription('undergrad division cannot be held simultaneously with grad or alum. current grads who are UG alums can hold both roles simultaneously')], components: [row], ephemeral: true };
 }
 
 export interface ConfigRole {

@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, Events } from 'discord.js';
-import { registerCommands } from './command-manager';
+import { handleInteraction, registerCommands } from './command-manager';
 import dotenv from 'dotenv';
 import Save, { SaveData } from './save';
 import { listenForRoleMenuButtonPress } from './interaction-listeners';
@@ -40,6 +40,10 @@ client.once(Events.ClientReady, async (c: Client) => {
 
         registerCommands(c, guild);
     }
+
+    client.on(Events.InteractionCreate, async interaction => {
+        handleInteraction(interaction);
+    });
 });
 
 // Log in to Discord with your client's token

@@ -77,38 +77,38 @@ export async function listenForDivisionSelection(interaction: ButtonInteraction,
         if (confirmation.customId === 'undergrad') {
             if (undergrad) {
                 await memberRoleManager.remove(divisions.undergrad.roleID);
-                reply = await confirmation.reply({ content: 'Removed `Undergraduate` role', ephemeral: true });
+                reply = await confirmation.reply({ content: 'You no longer have the `undergraduate` role.', ephemeral: true });
             } else {
                 await memberRoleManager.add(divisions.undergrad.roleID);
 
                 if (grad) {
                     await memberRoleManager.remove(divisions.grad.roleID);
-                    reply = await confirmation.reply({ content: 'Removed `Graduate` role and added `Undergraduate` role', ephemeral: true });
+                    reply = await confirmation.reply({ content: 'You no longer have the `graduate` role.\nYou now have the undergraduate role! Head to <#869429445163876412> to get more specific roles.', ephemeral: true });
                 } else {
-                    reply = await confirmation.reply({ content: 'Added `Undergraduate` role', ephemeral: true });
+                    reply = await confirmation.reply({ content: 'You now have the undergraduate role! Head to <#869429445163876412> to get more specific roles.', ephemeral: true });
                 }
             }
         } else if (confirmation.customId === 'grad') {
             if (grad) {
                 await memberRoleManager.remove(divisions.grad.roleID);
-                reply = await confirmation.reply({ content: 'Removed `Graduate` role', ephemeral: true });
+                reply = await confirmation.reply({ content: 'You no longer have the `graduate` role.', ephemeral: true });
             } else {
                 await memberRoleManager.add(divisions.grad.roleID);
 
                 if (undergrad) {
                     await memberRoleManager.remove(divisions.undergrad.roleID);
-                    reply = await confirmation.reply({ content: 'Removed `Undergraduate` role and added `Graduate` role', ephemeral: true });
+                    reply = await confirmation.reply({ content: 'You no longer have the `undergraduate` role.\nYou now have the graduate role! Head to <#869074754227830854> to get more specific roles.', ephemeral: true });
                 } else {
-                    reply = await confirmation.reply({ content: 'Added `Graduate` role', ephemeral: true });
+                    reply = await confirmation.reply({ content: 'You now have the graduate role! Head to <#869074754227830854> to get more specific roles.', ephemeral: true });
                 }
             }
         } else if (confirmation.customId === 'alum') {
             if (alum) {
                 await memberRoleManager.remove(divisions.alum.roleID);
-                reply = await confirmation.reply({ content: 'Removed `Alumni` role', ephemeral: true });
+                reply = await confirmation.reply({ content: 'You no longer have the `alumni` role.', ephemeral: true });
             } else {
                 await memberRoleManager.add(divisions.alum.roleID);
-                reply = await confirmation.reply({ content: 'Added `Alumni` role', ephemeral: true });
+                reply = await confirmation.reply({ content: 'You now have the alumni role! Head to <#877682997460095046> to get more specific roles.', ephemeral: true });
             }
         }
 
