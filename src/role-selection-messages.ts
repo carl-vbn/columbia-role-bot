@@ -1,4 +1,4 @@
-import { APIActionRowComponent, APIMessageActionRowComponent, ActionRowBuilder, ButtonInteraction, EmbedBuilder, GuildMember, JSONEncodable, StringSelectMenuBuilder } from "discord.js";
+import { APIActionRowComponent, APIMessageActionRowComponent, ActionRowBuilder, ButtonInteraction, EmbedBuilder, GuildMember, GuildTextBasedChannel, JSONEncodable, StringSelectMenuBuilder } from "discord.js";
 import { buildDivisionSelectionMessage, generateDropdownOptions } from "./utils";
 import { listenForDivisionSelection, listenForDropdownRoleSelection } from "./interaction-listeners";
 
@@ -38,9 +38,10 @@ export async function sendDepartmentSelection(interaction: ButtonInteraction) {
             .addOptions(await generateDropdownOptions(interaction.member as GuildMember, engineeringTypes))
         ) as JSONEncodable<APIActionRowComponent<APIMessageActionRowComponent>>;
 
-
+    console.log(`[${Date.now()}] Sending department selection to ${interaction.user.tag} in #${(interaction.channel as GuildTextBasedChannel).name} in ${interaction.guild?.name} (${interaction.guild?.id})`);
     const response = await interaction.reply({ content: 'Choose your department(s)', components: [row1, row2, row3], ephemeral: true });
 
+    console.log(`[${Date.now()}] Listening for department selection from ${interaction.user.tag} in #${(interaction.channel as GuildTextBasedChannel).name} in ${interaction.guild?.name} (${interaction.guild?.id})`);
     listenForDropdownRoleSelection(interaction, response);
 }
 

@@ -1,4 +1,4 @@
-import { GuildMember, StringSelectMenuInteraction, Message, ButtonInteraction, InteractionResponse, GuildMemberRoleManager } from 'discord.js';
+import { GuildMember, StringSelectMenuInteraction, Message, ButtonInteraction, InteractionResponse, GuildMemberRoleManager, GuildTextBasedChannel } from 'discord.js';
 import config from './config.json';
 import { buildDivisionSelectionMessage, getMemberDivisions } from './utils';
 import { sendDepartmentSelection, sendDivisionSelection, sendPronounSelection } from './role-selection-messages';
@@ -13,8 +13,11 @@ const divisions = config.divisions;
 export async function listenForDropdownRoleSelection(interaction: ButtonInteraction, response: InteractionResponse) {
     try {
         const confirmation = await response.awaitMessageComponent({ filter: (i: any) => i.user.id === interaction.user.id, time: 120000 }) as StringSelectMenuInteraction;
+        console.log(`[${Date.now()}] ${confirmation.user.tag} in #${(confirmation.channel as GuildTextBasedChannel).name} in ${confirmation.guild?.name} (${confirmation.guild?.id}) selected dropdown: ${confirmation.customId}`);
         
         if (!confirmation.values) {
+            console.log('No values available. Deleting...');
+
             response.delete();
             return;
         }
@@ -50,8 +53,10 @@ export async function listenForDropdownRoleSelection(interaction: ButtonInteract
         }
 
         if (actions.length !== 0) {
+            console.log('Sending reply...');
             await confirmation.reply({ content: actions.join('\n'), components: [], ephemeral: true });
         } else {
+            console.log('No actions taken.');
             await confirmation.deferUpdate();
         }
         
@@ -129,6 +134,7 @@ export async function listenForDivisionSelection(interaction: ButtonInteraction,
 export async function listenForRoleMenuButtonPress(message: Message) {
     try {
         const confirmation = await message.awaitMessageComponent() as ButtonInteraction;
+        console.log(`[${Date.now()}] ${confirmation.user.tag} in #${(confirmation.channel as GuildTextBasedChannel).name} in ${confirmation.guild?.name} (${confirmation.guild?.id}) pressed button: ${confirmation.customId}`);
         if (confirmation.customId === 'select_departments') {
             sendDepartmentSelection(confirmation);
         } else if (confirmation.customId === 'select_division') {

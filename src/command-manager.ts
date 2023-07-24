@@ -1,4 +1,4 @@
-import { REST, Routes, Client, OAuth2Guild, Events, Guild, Interaction } from 'discord.js';
+import { REST, Routes, Client, OAuth2Guild, Events, Guild, Interaction, GuildTextBasedChannel } from 'discord.js';
 
 import sendRoleMessagesCommand from './commands/send-role-messages.js';
 
@@ -44,6 +44,8 @@ export const handleInteraction = async (interaction: Interaction) => {
         console.error(`No command matching ${interaction.commandName} was found.`);
         return;
     }
+
+    console.log(`[${Date.now()}] ${interaction.user.tag} in #${(interaction.channel as GuildTextBasedChannel).name} in ${interaction.guild?.name} (${interaction.guild?.id}) executed command: ${interaction.commandName}`);
 
     try {
         await command.execute(interaction);
