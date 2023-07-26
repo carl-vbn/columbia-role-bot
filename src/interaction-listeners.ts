@@ -62,11 +62,14 @@ export async function listenForDropdownRoleSelection(interaction: ButtonInteract
         
         listenForDropdownRoleSelection(interaction, response); // Listen for the next dropdown selection
     } catch (e: any) {
-        if (e.code === 'InteractionCollectorError') {
-            await interaction.deleteReply();
-        } else {
+        if (e.code !== 'InteractionCollectorError') {
             console.error(e);
-            interaction.editReply({ content: 'An unexpected error occurred :/', components: [] });
+        }
+
+        try {
+            await interaction.deleteReply();
+        } catch {
+            console.error("Failed to delete reply");
         }
     }
 }
@@ -122,11 +125,14 @@ export async function listenForDivisionSelection(interaction: ButtonInteraction,
         listenForDivisionSelection(interaction, response); // Listen for the next button press
 
     } catch (e: any) {
-        if (e.code === 'InteractionCollectorError') {
-            await interaction.deleteReply();
-        } else {
+        if (e.code !== 'InteractionCollectorError') {
             console.error(e);
-            interaction.editReply({ content: 'An unexpected error occurred :/', components: [] });
+        }
+
+        try {
+            await interaction.deleteReply();
+        } catch {
+            console.error("Failed to delete reply");
         }
     }
 }
